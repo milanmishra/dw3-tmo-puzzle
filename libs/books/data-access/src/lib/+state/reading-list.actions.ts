@@ -13,13 +13,13 @@ export const loadReadingListError = createAction(
 );
 
 export const addToReadingList = createAction(
-  '[Books Search Results] Add to list',
+  '[Reading List API] Add to list',
   props<{ book: Book }>()
 );
 
 export const failedAddToReadingList = createAction(
   '[Reading List API] Failed add to list',
-  props<{ book: Book }>()
+  props<{ error: string }>()
 );
 
 export const confirmedAddToReadingList = createAction(
@@ -28,13 +28,13 @@ export const confirmedAddToReadingList = createAction(
 );
 
 export const removeFromReadingList = createAction(
-  '[Books Search Results] Remove from list',
+  '[Reading List API] Remove from list',
   props<{ item: ReadingListItem }>()
 );
 
 export const failedRemoveFromReadingList = createAction(
   '[Reading List API] Failed remove from list',
-  props<{ item: ReadingListItem }>()
+  props<{ error: string }>()
 );
 
 export const confirmedRemoveFromReadingList = createAction(

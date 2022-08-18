@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { BooksDataAccessModule } from './books-data-access.module';
 
-describe('ShopDataAccessModule', () => {
+describe('BooksDataAccessModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BooksDataAccessModule]

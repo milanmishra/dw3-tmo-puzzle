@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { BooksFeatureModule } from './books-feature.module';
 
-describe('ShopFeatureModule', () => {
+describe('BooksFeatureModule', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BooksFeatureModule]

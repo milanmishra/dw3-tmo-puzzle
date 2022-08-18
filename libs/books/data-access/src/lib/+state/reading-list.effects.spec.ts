@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
@@ -7,9 +7,11 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { SharedTestingModule } from '@tmo/shared/testing';
 import { ReadingListEffects } from './reading-list.effects';
 import * as ReadingListActions from './reading-list.actions';
+import { okReadsConstant } from '@tmo/shared/models';
+import { Action } from '@ngrx/store';
 
 describe('ToReadEffects', () => {
-  let actions: ReplaySubject<any>;
+  let actions: Observable<Action>;
   let effects: ReadingListEffects;
   let httpMock: HttpTestingController;
 
@@ -28,18 +30,17 @@ describe('ToReadEffects', () => {
   });
 
   describe('loadReadingList$', () => {
-    it('should work', done => {
-      actions = new ReplaySubject();
-      actions.next(ReadingListActions.init());
+    it('should load reading list when api is success', (done) => {
+      actions = of(ReadingListActions.init());
 
-      effects.loadReadingList$.subscribe(action => {
+      effects.loadReadingList$.subscribe((action) => {
         expect(action).toEqual(
           ReadingListActions.loadReadingListSuccess({ list: [] })
         );
         done();
       });
 
-      httpMock.expectOne('/api/reading-list').flush([]);
+      httpMock.expectOne(`${okReadsConstant.API.READING_LIST_API}`).flush([]);
     });
   });
 });
