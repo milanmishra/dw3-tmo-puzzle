@@ -6,7 +6,7 @@ import {
 import * as ToReadSelectors from './reading-list.selectors';
 import { createBook, createReadingListItem } from '@tmo/shared/testing';
 
-describe('ReadingList Selectors', () => {
+describe('Reading List Selectors', () => {
   let state;
 
   beforeEach(() => {
@@ -34,8 +34,13 @@ describe('ReadingList Selectors', () => {
     };
   });
 
-  describe('Books Selectors', () => {
-    it('getReadingList() should return the list of Books', () => {
+    it('getAllBooks() should return list of all Books', () => {
+      const results = ToReadSelectors.getAllBooks(state);
+
+      expect(results.length).toBe(3);
+    });
+
+    it('getReadingList() should return the list of Books added to the reading list', () => {
       const results = ToReadSelectors.getReadingList(state);
 
       expect(results.length).toBe(3);
@@ -48,4 +53,3 @@ describe('ReadingList Selectors', () => {
       expect(result).toBe(3);
     });
   });
-});

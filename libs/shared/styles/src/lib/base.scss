@@ -11,9 +11,9 @@ body {
 
 h1,
 h2 {
-  font-size: 24px;
+  font-size: 28px;
   margin: $spacing-xxs 0;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 input {
@@ -22,11 +22,6 @@ input {
   padding: $spacing-xxs;
 }
 
-a {
-  cursor: pointer;
-  color: $pink-accent;
-
-  &:hover {
-    color: $pink-dark;
-  }
+.font-weight-bold {
+  font-weight: bold;
 }

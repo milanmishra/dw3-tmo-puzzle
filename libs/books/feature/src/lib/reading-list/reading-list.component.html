@@ -1,26 +1,36 @@
 <ng-container *ngIf="(readingList$ | async).length > 0; else empty">
-  <div class="reading-list-item" *ngFor="let b of readingList$ | async">
+  <div class="reading-list-item" *ngFor="let item of readingList$ | async">
     <div>
-      <img class="reading-list-item--cover" [src]="b.coverUrl" />
+      <img
+        data-testing="book-cover"
+        class="book-cover"
+        [src]="item.coverUrl"
+        alt="book cover"
+      />
     </div>
-    <div class="reading-list-item--details">
-      <strong class="reading-list-item--details--title">{{ b.title }}</strong>
-      <div class="reading-list-item--details--author">
-        {{ b.authors.join(',') }}
-      </div>
+    <div class="reading-list-item-details">
+      <span class="font-weight-bold" data-testing="book-title">{{
+        item.title
+      }}</span>
+      <span data-testing="book-author-name">
+        {{
+          item.authors?.join(', ') || readingListConstants.NO_AUTHOR_MENTIONED
+        }}
+      </span>
     </div>
-    <div>
-      <button
-        mat-icon-button
-        color="warn"
-        [attr.aria-label]="'Remove ' + b.title + ' from reading list'"
-        (click)="removeFromReadingList(b)"
-      >
-        <mat-icon>remove_circle</mat-icon>
-      </button>
-    </div>
+    <button
+      mat-icon-button
+      data-testing="remove-book"
+      color="warn"
+      [attr.aria-label]="'Remove ' + item.title + ' from reading list'"
+      (click)="removeFromReadingList(item)"
+    >
+      <mat-icon>{{ readingListConstants.READING_LIST.REMOVE_CIRCLE }}</mat-icon>
+    </button>
   </div>
 </ng-container>
 <ng-template #empty>
-  <p class="empty">You haven't added any books to your reading list yet.</p>
+  <p data-testing="empty-text" class="empty">
+    {{ readingListConstants.READING_LIST.EMPTY_LIST_TEXT }}
+  </p>
 </ng-template>

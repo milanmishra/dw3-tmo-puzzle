@@ -1,43 +1,123 @@
 <form [formGroup]="searchForm" (submit)="searchBooks()">
-  <mat-form-field floatLabel="never">
+  <mat-form-field>
     <input
       autoFocus
       matInput
       type="search"
-      placeholder="Search for books to add to your reading list"
+      placeholder="{{ bookSearchConstants.BOOK_SEARCH.PLACEHOLDER_TEXT }}"
       formControlName="term"
     />
-    <button mat-icon-button matSuffix>
-      <mat-icon>search</mat-icon>
+    <button
+      mat-icon-button
+      matSuffix
+      aria-label="search book"
+      data-testing="search-button"
+      [disabled]="!searchForm.valid"
+    >
+      <mat-icon aria-label="search icon">{{
+        bookSearchConstants.BOOK_SEARCH.SEARCH
+      }}</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matSuffix
+      aria-label="reset book search"
+      data-testing="clear-button"
+      (click)="resetSearch()"
+    >
+      <mat-icon>{{ bookSearchConstants.BOOK_SEARCH.CLEAR }}</mat-icon>
     </button>
   </mat-form-field>
 </form>
 
-<ng-container *ngIf="searchTerm; else empty">
-  <div class="book-grid">
-    <div class="book" data-testing="book-item" *ngFor="let b of books">
-      <div class="book--title">
-        {{ b.title }}
+<!-- ERROR TEXT SECTION -->
+<ng-container *ngIf="getBooksError$ | async">
+  <p
+    aria-live="assertive"
+    class="error-text font-weight-bold"
+    data-testing="error-text"
+  >
+    {{ bookSearchConstants.ERROR_TEXT }}
+  </p>
+</ng-container>
+
+<!-- BOOKS LIST SECTION -->
+<ng-container
+  *ngIf="
+    (books$ | async).length && (getBooksError$ | async) === null;
+    else empty
+  "
+>
+  <div class="book-grid" data-testing="books-list">
+    <div
+      class="book"
+      data-testing="book-item"
+      *ngFor="let book of books$ | async"
+    >
+      <div class="book-title">
+        {{ book.title }}
       </div>
-      <div class="book--content">
-        <div class="book--content--cover">
-          <img src="{{ b.coverUrl }}" />
+      <div class="book-content">
+        <div class="book-cover">
+          <img
+            src="{{ book.coverUrl }}"
+            alt="book cover"
+            title="{{ book.title }}"
+          />
         </div>
-        <div class="book--content--info">
-          <div><strong>Author:</strong> {{ b.authors.join(',') }}</div>
-          <div><strong>Publisher:</strong> {{ b.publisher }}</div>
+        <div class="book-content-info">
           <div>
-            <strong>Published:</strong> {{ formatDate(b.publishedDate) }}
+            <span
+              class="font-weight-bold"
+              [innerHTML]="bookSearchConstants.BOOK_SEARCH.AUTHOR"
+            ></span
+            >:
+            <span data-testing="book-author-name">{{
+              book.authors?.join(', ') ||
+                bookSearchConstants.NO_AUTHOR_MENTIONED
+            }}</span>
           </div>
-          <p [innerHTML]="b.description"></p>
+          <div>
+            <span
+              class="font-weight-bold"
+              [innerHTML]="bookSearchConstants.BOOK_SEARCH.PUBLISHER"
+            ></span
+            >:
+            {{
+              book.publisher ||
+                bookSearchConstants.BOOK_SEARCH.NO_PUBLISHER_MENTIONED
+            }}
+          </div>
+          <div>
+            <span
+              class="font-weight-bold"
+              [innerHTML]="bookSearchConstants.BOOK_SEARCH.PUBLISHED"
+            ></span
+            >:
+            <span data-testing="book-published-date">
+              {{
+                (book.publishedDate
+                  | date: bookSearchConstants.BOOK_SEARCH.DATE_FORMAT) ||
+                  bookSearchConstants.BOOK_SEARCH.NO_DATE_MENTIONED
+              }}</span
+            >
+          </div>
+          <p
+            data-testing="book-description"
+            [innerHTML]="
+              book.description ||
+              bookSearchConstants.BOOK_SEARCH.NO_DESCRIPTION_MENTIONED
+            "
+          ></p>
           <div>
             <button
               mat-flat-button
-              color="primary"
-              (click)="addBookToReadingList(b)"
-              [disabled]="b.isAdded"
+              color="want-to-read-btn"
+              (click)="addBookToReadingList(book)"
+              [disabled]="book.isAdded"
+              data-testing="add-book"
             >
-              Want to Read
+              {{ bookSearchConstants.BOOK_SEARCH.WANT_TO_READ }}
             </button>
           </div>
         </div>
@@ -45,11 +125,18 @@
     </div>
   </div>
 </ng-container>
+
+<!-- EXAMPLE TEXT SECTION -->
 <ng-template #empty>
-  <div class="empty">
+  <div class="empty" data-testing="example-text-section">
     <p>
-      Try searching for a topic, for example "<a (click)="searchExample()"
-        >JavaScript</a
+      {{ bookSearchConstants.BOOK_SEARCH.SEARCH_EXAMPLE_TEXT }} "
+      <button
+        class="search-example-btn"
+        aria-label="Try searching for a topic, for example JavaScript"
+        (click)="searchExample()"
+      >
+        {{ bookSearchConstants.BOOK_SEARCH.JAVASCRIPT }}</button
       >".
     </p>
   </div>

@@ -21,27 +21,26 @@
   }
 }
 
-.reading-list-item--cover {
+.book-cover {
   max-width: 36px;
   max-height: 36px;
   margin-right: $spacing-xxs;
 }
 
-.reading-list-item--details {
+.reading-list-item-details {
   flex: 1;
   min-width: 0;
   margin-right: $spacing-xxs;
-}
 
-.reading-list-item--details--title,
-.reading-list-item--details--author {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
 
 .empty {
-  font-weight: 100;
+  font-weight: 300;
   font-size: 1rem;
-  color: $gray60;
+  color: $gray80;
 }

@@ -7,8 +7,8 @@ import {
 } from './reading-list.reducer';
 import { createBook, createReadingListItem } from '@tmo/shared/testing';
 
-describe('Books Reducer', () => {
-  describe('valid Books actions', () => {
+describe('Reading List Reducer', () => {
+  describe('valid Reading List actions', () => {
     let state: State;
 
     beforeEach(() => {
@@ -18,7 +18,7 @@ describe('Books Reducer', () => {
       );
     });
 
-    it('loadBooksSuccess should load books from reading list', () => {
+    it('loadReadingListSuccess should load books from reading list', () => {
       const list = [
         createReadingListItem('A'),
         createReadingListItem('B'),
@@ -32,9 +32,19 @@ describe('Books Reducer', () => {
       expect(result.ids.length).toEqual(3);
     });
 
-    it('failedAddToReadingList should undo book addition to the state', () => {
-      const action = ReadingListActions.failedAddToReadingList({
-        book: createBook('B')
+    it('confirmedAddToReadingList should add books to the reading list', () => {
+      const action = ReadingListActions.confirmedAddToReadingList({
+        book: createBook('C')
+      });
+
+      const result: State = reducer(state, action);
+
+      expect(result.ids).toEqual(['A', 'B', 'C']);
+    });
+
+    it('confirmedRemoveFromReadingList should remove books from the reading list', () => {
+      const action = ReadingListActions.confirmedRemoveFromReadingList({
+        item: createReadingListItem('B')
       });
 
       const result: State = reducer(state, action);
@@ -42,14 +52,28 @@ describe('Books Reducer', () => {
       expect(result.ids).toEqual(['A']);
     });
 
-    it('failedRemoveFromReadingList should undo book removal from the state', () => {
-      const action = ReadingListActions.failedRemoveFromReadingList({
-        item: createReadingListItem('C')
+    it('failedAddToReadingList should update state with error message and undo book addition to the reading list', () => {
+      const error = 'Failed to add book to the reading list';
+      const action = ReadingListActions.failedAddToReadingList({
+        error
       });
 
       const result: State = reducer(state, action);
 
-      expect(result.ids).toEqual(['A', 'B', 'C']);
+      expect(result.ids).toEqual(['A', 'B']);
+      expect(result.error).toEqual(error);
+    });
+
+    it('failedRemoveFromReadingList should update state with error message and undo book removal from the reading list', () => {
+      const error = 'Failed to remove book from the reading list!';
+      const action = ReadingListActions.failedRemoveFromReadingList({
+        error
+      });
+
+      const result: State = reducer(state, action);
+
+      expect(result.ids).toEqual(['A', 'B']);
+      expect(result.error).toEqual(error);
     });
   });
 
