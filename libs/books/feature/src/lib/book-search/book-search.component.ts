@@ -1,32 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   addToReadingList,
   clearSearch,
   getAllBooks,
   getBooksError,
-  searchBooks,
+  searchBooks
 } from '@tmo/books/data-access';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Book, okReadsConstant } from '@tmo/shared/models';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'tmo-book-search',
   templateUrl: './book-search.component.html',
   styleUrls: ['./book-search.component.scss']
 })
-export class BookSearchComponent {
+export class BookSearchComponent implements OnInit, OnDestroy {
   books$ = this.store.select(getAllBooks);
   getBooksError$ = this.store.select(getBooksError);
   bookSearchConstants = okReadsConstant;
+  private destroyed$ = new Subject<boolean>();
+
   searchForm = this.fb.group({
-    term: new FormControl(null, [Validators.required])
+    term: ''
   });
 
   constructor(
     private readonly store: Store,
     private readonly fb: FormBuilder
   ) {}
+
+  ngOnInit(): void {
+    this.searchForm.controls['term'].valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        if (searchTerm) {
+          this.store.dispatch(searchBooks({ term: searchTerm }));
+        } else {
+          this.store.dispatch(clearSearch());
+        }
+      });
+  }
 
   addBookToReadingList(book: Book): void {
     this.store.dispatch(addToReadingList({ book }));
@@ -36,7 +52,6 @@ export class BookSearchComponent {
     this.searchForm.controls.term.setValue(
       this.bookSearchConstants.BOOK_SEARCH.JAVASCRIPT
     );
-    this.searchBooks();
   }
 
   searchBooks(): void {
@@ -45,8 +60,8 @@ export class BookSearchComponent {
     }
   }
 
-  resetSearch(): void {
-    this.searchForm.controls.term.setValue(null);
-    this.store.dispatch(clearSearch());
+  ngOnDestroy() {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

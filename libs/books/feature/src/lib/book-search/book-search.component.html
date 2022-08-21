@@ -1,4 +1,4 @@
-<form [formGroup]="searchForm" (submit)="searchBooks()">
+<form [formGroup]="searchForm">
   <mat-form-field>
     <input
       autoFocus
@@ -7,26 +7,6 @@
       placeholder="{{ bookSearchConstants.BOOK_SEARCH.PLACEHOLDER_TEXT }}"
       formControlName="term"
     />
-    <button
-      mat-icon-button
-      matSuffix
-      aria-label="search book"
-      data-testing="search-button"
-      [disabled]="!searchForm.valid"
-    >
-      <mat-icon aria-label="search icon">{{
-        bookSearchConstants.BOOK_SEARCH.SEARCH
-      }}</mat-icon>
-    </button>
-    <button
-      mat-icon-button
-      matSuffix
-      aria-label="reset book search"
-      data-testing="clear-button"
-      (click)="resetSearch()"
-    >
-      <mat-icon>{{ bookSearchConstants.BOOK_SEARCH.CLEAR }}</mat-icon>
-    </button>
   </mat-form-field>
 </form>
 
