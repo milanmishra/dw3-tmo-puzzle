@@ -27,5 +27,15 @@ export const okReadsConstant = {
     MY_READING_LIST: 'My Reading List',
     CLOSE: 'close',
     NO_AUTHOR_MENTIONED: "Author's name not avaliable",
-    ERROR_TEXT: 'Sorry something went wrong!'
+    ERROR_TEXT: 'Sorry something went wrong!',
+    SNACKBAR_CONSTANTS: {
+        ADD: 'add',
+        BOOK_ADDED_TEXT: 'Added to the reading list!',
+        BOOK_ADDED_CLASS: 'bookAdded',
+        REMOVE: 'remove',
+        BOOK_REMOVED_TEXT: 'Removed from the reading list!',
+        BOOK_REMOVED_CLASS: 'bookRemoved',
+        UNDO: 'Undo',
+        DURATION: 3000
+      }
 }

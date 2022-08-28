@@ -34,7 +34,8 @@ describe('Reading List Reducer', () => {
 
     it('confirmedAddToReadingList should add books to the reading list', () => {
       const action = ReadingListActions.confirmedAddToReadingList({
-        book: createBook('C')
+        book: createBook('C'),
+        showSnackBar: true
       });
 
       const result: State = reducer(state, action);
@@ -44,7 +45,8 @@ describe('Reading List Reducer', () => {
 
     it('confirmedRemoveFromReadingList should remove books from the reading list', () => {
       const action = ReadingListActions.confirmedRemoveFromReadingList({
-        item: createReadingListItem('B')
+        item: createReadingListItem('B'),
+        showSnackBar: true
       });
 
       const result: State = reducer(state, action);
