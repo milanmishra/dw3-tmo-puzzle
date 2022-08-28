@@ -25,3 +25,21 @@ input {
 .font-weight-bold {
   font-weight: bold;
 }
+
+.bookRemoved.mat-snack-bar-container{
+  background-color: $red80;
+  color: $white;
+}
+.bookAdded.mat-snack-bar-container{
+  background-color: $green;
+  color: $white;
+}
+.mat-simple-snackbar-action {
+    color: $black ;
+    font-weight: 400;
+    background-color: $white;
+    border-radius: 3px;
+}
+.mat-simple-snackbar {
+    font-weight: 400;
+}

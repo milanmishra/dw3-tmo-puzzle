@@ -16,6 +16,6 @@ export class ReadingListComponent {
   constructor(private readonly store: Store) {}
 
   removeFromReadingList(item: ReadingListItem): void {
-    this.store.dispatch(removeFromReadingList({ item }));
+    this.store.dispatch(removeFromReadingList({ item, showSnackBar: true }));
   }
 }
