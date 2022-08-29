@@ -7,7 +7,11 @@ import {
 import { ReadingListComponent } from './reading-list.component';
 import { BooksFeatureModule } from '@tmo/books/feature';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { getReadingList, removeFromReadingList } from '@tmo/books/data-access';
+import {
+  getReadingList,
+  markBookAsFinished,
+  removeFromReadingList
+} from '@tmo/books/data-access';
 import { okReadsConstant } from '@tmo/shared/models';
 
 describe('ReadingListComponent', () => {
@@ -84,6 +88,21 @@ describe('ReadingListComponent', () => {
 
     expect(emptyText.innerHTML.trim()).toBe(
       okReadsConstant.READING_LIST.EMPTY_LIST_TEXT
+    );
+  });
+
+  it('should dispatch markedAsFinished action and mark book as finished when the check button is clicked', () => {
+    const readingList = { ...createReadingListItem('testing'), isAdded: true };
+    const markAsFinishedBtn = fixture.nativeElement.querySelector(
+      '[data-testing="mark-as-finished"]'
+    );
+
+    markAsFinishedBtn.click();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      markBookAsFinished({
+        item: readingList
+      })
     );
   });
 });

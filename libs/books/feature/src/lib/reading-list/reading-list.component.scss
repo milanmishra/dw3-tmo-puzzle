@@ -15,7 +15,7 @@
   width: 100%;
 
   > * {
-    display: flex;
+    display: inline;
     flex-direction: column;
     justify-content: center;
   }
@@ -43,4 +43,12 @@
   font-weight: 300;
   font-size: 1rem;
   color: $gray80;
+}
+
+.mark-as-finished {
+  color: $green;
+}
+
+.finished-date {
+  color: $pink-accent;
 }
